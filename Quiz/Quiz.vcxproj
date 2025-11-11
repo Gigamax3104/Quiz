@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="Move2.cpp" />
     <ClCompile Include="QuizGame.cpp" />
   </ItemGroup>
   <ItemGroup>

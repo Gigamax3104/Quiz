@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define QUIZ_MAX 5
+#define SQR(x) ((x * x)) //#define[スペース]関数名(仮引数)[スペース](処理)でマクロ関数を定義できる。
 #include <stdio.h>
 
 const int INPUT_MAX = 99;
@@ -26,7 +27,7 @@ void Move() {
 	int total = 0;
 	char input[INPUT_MAX] = "";
 
-	printf("クイズゲームへようこそ！ここでは5問のクイズに答えてもらうよ。早速行ってみよう！\n\n");
+	printf("\nクイズゲームへようこそ！ここでは5問のクイズに答えてもらうよ。早速行ってみよう！\n\n");
 
 	for (int i = 0; i < QUIZ_MAX; i++) {
 		printf("第%d問！%s\n回答:", i + 1, Question[i]);
