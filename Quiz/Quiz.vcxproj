@@ -129,7 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Move2.cpp" />
-    <ClCompile Include="QuizGame.cpp" />
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="List.h" />
