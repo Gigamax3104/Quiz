@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define QUIZ_MAX 5
 #include <stdio.h>
 
 const int INPUT_MAX = 99;
@@ -12,11 +13,11 @@ const char* Question[] = {
 };
 
 const char* Answer[] = {
-	"哺乳類",
-	"プラスチック",
-	"ドラえもん",
-	"マリオ",
-	"高市早苗"
+	"ほにゅうるい(哺乳類,mammalian,Mammalian)",
+	"ぷらすちっく(プラスチック,plastic,Plastic)",
+	"どらえもん(ドラえもん)",
+	"まりお(マリオ,マリオ・マリオ)",
+	"たかいちさなえ(高市早苗,高市早苗総理,高市早苗総理大臣)"
 };
 
 void Move();
@@ -30,11 +31,9 @@ void Move() {
 	int total = 0;
 	char input[INPUT_MAX] = "";
 
-	int size = sizeof Question / sizeof Question[0];
-
 	printf("クイズゲームへようこそ！ここでは5問のクイズに答えてもらうよ。早速行ってみよう！\n\n");
 
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < QUIZ_MAX; i++) {
 		printf("第%d問！%s\n回答:",i + 1,Question[i]);
 		scanf("%s",input);
 
@@ -51,15 +50,27 @@ void Move() {
 }
 
 bool Judge(const char* input,const char* answer) {
+	const char* save = input;
+
 	while (*answer) {
 		if (*input == *answer) {
 			answer++;
 			input++;
+
+			if (*input == '\0' && (*answer == ',' || *answer == ')' || *answer == '\0')) {
+				return true;
+			}
 		}
-		else if(*input != *answer || *input == '\0'|| *answer == '\0') {
+		else if(*input != *answer){
+			while (*answer != ',' && *answer != '(') {
+				answer++;
+			}
+
+			input = save;
+			answer++;
+		}
+		else if(*input == '\0'|| *answer == '\0') {
 			return false;
 		}
 	}
-
-	return true;
 }
