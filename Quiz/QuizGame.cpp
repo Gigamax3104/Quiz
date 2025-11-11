@@ -17,7 +17,7 @@ const char* Answer[] = {
 	"ぷらすちっく(プラスチック,plastic,Plastic)",
 	"どらえもん(ドラえもん)",
 	"まりお(マリオ,マリオ・マリオ)",
-	"たかいちさなえ(高市早苗,高市早苗総理,高市早苗総理大臣)"
+	"たかいちさなえ(高市早苗)"
 };
 
 void Move();
@@ -42,7 +42,7 @@ void Move() {
 			total++;
 		}
 		else {
-			printf("残念！正解は%sでした！\n\n", Answer[i]);
+			printf("残念！正解は、%sでした！\n\n", Answer[i]);
 		}
 	}
 
