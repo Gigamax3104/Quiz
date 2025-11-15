@@ -54,7 +54,7 @@ enum Massage {
 };
 
 static bool ProgressTimer(int timer);
-static void Quiz(int timer, int* QuestionList);
+static bool Quiz(int timer, int* QuestionList);
 static void Range(int* list);
 static bool Judge(const char* input, const char* answer);
 static Massage JM(int total);
@@ -62,15 +62,13 @@ static Massage JM(int total);
 void Move(int timer) {
 	int* QuestionList = new int[QUIZ_MAX];
 
-	//while (true) {
-		//if (ProgressTimer(timer)) {
+	while (ProgressTimer(timer)) {
 		Range(QuestionList);
-		Quiz(timer, QuestionList);
-		//}
-		//else {
-		//	break;
-		//}
-	//}
+		if (!Quiz(timer, QuestionList)) {
+			break;
+		}
+	}
+
 	delete[] QuestionList;
 }
 
@@ -82,12 +80,16 @@ static bool ProgressTimer(int timer) {
 		now->tm_sec - timer >= 10 ? false : true;
 }
 
-static void Quiz(int timer, int* QuestionList) {
+static bool Quiz(int timer, int* QuestionList) {
 	int total = 0;
 	int i = 0;
+
 	char key = ' ';
-	char key2 = ' ';
 	char input[MAX_SIZE];
+
+	int idx = 0;
+	char key2[MAX_SIZE];
+	char* p = key2;
 
 	printf("\nクイズゲームへようこそ！ここでは5問のクイズに答えてもらうよ。早速行ってみよう！\n\n");
 
@@ -95,17 +97,15 @@ static void Quiz(int timer, int* QuestionList) {
 
 		while (i < QUIZ_MAX / 2) {
 			int idx = 0;
-			char input2[] = "";
 
 			printf("第%d問！%s\n回答:", i + 1, Question[QuestionList[i]]);
-			scanf("%s", input);
-			//while ((key = getch()) != '\r') {
-			//	input2[idx++] = key;
-			//	char* p = &input2[idx - 1];
-			//	printf("%c", *p);
-			//}
+			while ((key = getch()) != '\r') {
+				input[idx++] = key;
+				char* p = &input[idx - 1];
+				printf("%c", *p);
+			}
 
-			//input2[idx] = '\0';
+			input[idx] = '\0';
 			printf("\n");
 
 			if (Judge(input, Answer[QuestionList[i]])) {
@@ -116,54 +116,46 @@ static void Quiz(int timer, int* QuestionList) {
 				printf("残念！正解は、%sでした！\n\n", Answer[QuestionList[i]]);
 			}
 
-			//idx = 0;
+			idx = 0;
 			i++;
 
-			//if (!ProgressTimer(timer)) {
-			//	break;
-			//}
+			if (!ProgressTimer(timer)) {
+				break;
+			}
 		}
 
 		printf("%s\n\n", massage[JM(total)]);
 
-		//if (!ProgressTimer(timer)) {
-		//	break;
-		//}
-		//else if(i == QUIZ_MAX / 2){
+		if (!ProgressTimer(timer)) {
+			break;
+		}
+		else if(i == QUIZ_MAX / 2){
 			printf("もう一度挑戦しますか\?やめますか\?(挑戦→z : やめる→x)");
 
-			//int idx = 0;
-			//char save[] = "";
-
 			do {
-				scanf("%c", &key);
-				//while ((key2 = getch()) != '\r') {
-				//	save[idx++] = key2;
-				//	char* p = &key2;
-				//	printf("%c", *p);
-				//}
+				while ((key = getch()) != '\r') {
+					key2[idx++] = key;
+					printf("%c", *p);
+				}
 
-				//save[idx] = '\0';
+			} while (*p != 'x' && *p != 'z');
 
-				//if (!ProgressTimer(timer)) {
-				//	break;
-				//}
-
-			} while (key != 'x' && key != 'z');
-
-			//if (!ProgressTimer(timer)) {
-			//	break;
-			//}
-			//else {
+			if (!ProgressTimer(timer)) {
+				break;
+			}
+			else {
 				printf("\n");
-			//}
-		//}
+			}
+		}
 	
 		i = 0;
+		idx = 0;
 		total = 0;
 		Range(QuestionList);
 
-	} while (key == 'z');
+	} while (*p == 'z');
+
+	return false;
 }
 
 static void Range(int* list) {
