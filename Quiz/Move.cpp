@@ -9,8 +9,7 @@
 #include	<conio.h>
 #include	<Windows.h>
 
-const int INPUT_MAX = 99;
-
+//問題リスト
 const char* Question[] = {
 	"兎は何類\?",
 	"ペットボトルは何で作られている\?",
@@ -24,6 +23,7 @@ const char* Question[] = {
 	"石油ショックという社会現象がある。それが起きた年は何年でしょうか\?"
 };
 
+//答えリスト
 const char* Answer[] = {
 	"ほにゅうるい(哺乳類,mammalian,Mammalian)",
 	"ぷらすちっく(プラスチック,plastic,Plastic)",
@@ -37,6 +37,7 @@ const char* Answer[] = {
 	"1973年(1973,１９７３,１９７３年)"
 };
 
+//正解数によるメッセージ
 const char* massage[] = {
 	"素晴らしい！全問正解だ！",
 	"結構やるじゃない！次は全問正解に向けて挑戦だ！",
@@ -59,6 +60,7 @@ static void Range(int* list);
 static bool Judge(const char* input, const char* answer);
 static Massage JM(int total);
 
+//外部リンケージにする関数
 void Move(int timer) {
 	int* QuestionList = new int[QUIZ_MAX];
 
@@ -72,6 +74,7 @@ void Move(int timer) {
 	delete[] QuestionList;
 }
 
+//10秒経過するまで処理する関数
 static bool ProgressTimer(int timer) {
 	time_t t = time(NULL);
 	struct tm* now = localtime(&t);
@@ -80,6 +83,7 @@ static bool ProgressTimer(int timer) {
 		now->tm_sec - timer >= 10 ? false : true;
 }
 
+//主に動作する関数
 static bool Quiz(int timer, int* QuestionList) {
 	int total = 0;
 	int i = 0;
@@ -158,6 +162,7 @@ static bool Quiz(int timer, int* QuestionList) {
 	return false;
 }
 
+//問題の出題順を決める関数
 static void Range(int* list) {
 	srand((unsigned int)time(NULL));
 
@@ -178,6 +183,7 @@ static void Range(int* list) {
 	}
 }
 
+//回答と解答との判断をする関数
 static bool Judge(const char* input, const char* answer) {
 	const char* save = input;
 
@@ -208,6 +214,7 @@ static bool Judge(const char* input, const char* answer) {
 	}
 }
 
+//正解数で決まる関数
 static Massage JM(int total) {
 	return
 		total == 5 ? Perfect :
