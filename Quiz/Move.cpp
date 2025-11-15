@@ -53,20 +53,19 @@ enum Massage {
 };
 
 static bool ProgressTimer(int timer);
-static void Quiz(int total,int timer, int* QuestionList);
+static void Quiz(int timer, int* QuestionList);
 static void Range(int* list);
 static bool Judge(const char* input, const char* answer);
 static Massage JM(int total);
 
 void Move(int timer) {
-	int total = 0;
 	int* QuestionList = new int[QUIZ_MAX];
 
 
 	//while (true) {
 		//if (ProgressTimer(timer)) {
-			Range(QuestionList);
-			Quiz(total,timer, QuestionList);
+		Range(QuestionList);
+		Quiz(timer, QuestionList);
 		//}
 		//else {
 		//	break;
@@ -83,7 +82,8 @@ static bool ProgressTimer(int timer) {
 		now->tm_sec - timer >= 10 ? false : true;
 }
 
-static void Quiz(int total,int timer, int* QuestionList) {
+static void Quiz(int timer, int* QuestionList) {
+	int total = 0;
 	int i = 0;
 	char key = ' ';
 	char key2 = ' ';
@@ -159,7 +159,10 @@ static void Quiz(int total,int timer, int* QuestionList) {
 			//}
 		//}
 	
-				i = 0;
+		i = 0;
+		total = 0;
+		Range(QuestionList);
+
 	} while (key == 'z');
 }
 
