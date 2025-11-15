@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _CRT_NONSTDC_NO_WARNINGS
 #define QUIZ_MAX 10
+#define MAX_SIZE 100
 #define SQR(x) ((x * x)) //#define[スペース]関数名(仮引数)[スペース](処理)でマクロ関数を定義できる。
 #include    <stdio.h>
 #include	<stdlib.h>
@@ -30,10 +31,10 @@ const char* Answer[] = {
 	"まりお(マリオ,マリオ・マリオ)",
 	"たかいちさなえ(高市早苗)",
 	"Fox(fox)",
-	"HIV(人免疫不全ウイルス)",
-	"太陽の10倍の速さ(太陽の10倍)",
-	"8",
-	"1973年(1973)"
+	"HIV(HIV,人免疫不全ウイルス)",
+	"太陽の10倍の速さ(太陽の10倍,太陽の１０倍の速さ)",
+	"8(８)",
+	"1973年(1973,１９７３,１９７３年)"
 };
 
 const char* massage[] = {
@@ -61,7 +62,6 @@ static Massage JM(int total);
 void Move(int timer) {
 	int* QuestionList = new int[QUIZ_MAX];
 
-
 	//while (true) {
 		//if (ProgressTimer(timer)) {
 		Range(QuestionList);
@@ -87,18 +87,18 @@ static void Quiz(int timer, int* QuestionList) {
 	int i = 0;
 	char key = ' ';
 	char key2 = ' ';
+	char input[MAX_SIZE];
 
 	printf("\nクイズゲームへようこそ！ここでは5問のクイズに答えてもらうよ。早速行ってみよう！\n\n");
 
 	do {
-		char input1[] = "";
 
 		while (i < QUIZ_MAX / 2) {
-			//int idx = 0;
-			//char input2[] = "";
+			int idx = 0;
+			char input2[] = "";
 
 			printf("第%d問！%s\n回答:", i + 1, Question[QuestionList[i]]);
-			scanf("%s", &input1);
+			scanf("%s", input);
 			//while ((key = getch()) != '\r') {
 			//	input2[idx++] = key;
 			//	char* p = &input2[idx - 1];
@@ -108,7 +108,7 @@ static void Quiz(int timer, int* QuestionList) {
 			//input2[idx] = '\0';
 			printf("\n");
 
-			if (Judge(input1, Answer[QuestionList[i]])) {
+			if (Judge(input, Answer[QuestionList[i]])) {
 				printf("正解！\n\n");
 				total++;
 			}

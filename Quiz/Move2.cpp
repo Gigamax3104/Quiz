@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define MAX 100
 #include <stdio.h>
 #include <cstdlib>
 #include <ctime>
@@ -25,13 +26,12 @@ static JudgeMassage JudgeTell(int input,int answer);
 void Move2() {
 	srand((unsigned int)time(NULL));
 
-	const int Range = 100;
-	int RandomNumber = rand() % Range + 1;
+	int RandomNumber = rand() % MAX + 1;
 	int turn = 1;
 	int Input = 0;
 
 	printf("\n数当てゲームへようこそ！ここでは私が思い浮かべている数字を当てていただきます！では行ってみましょう！\n");
-	printf("(ちなみに、数字は1～%dまでの中です。)\n",&Range);
+	printf("(ちなみに、数字は1～%dまでの中です。)\n",MAX);
 
 	do {
 		printf("%d回目>", turn);
