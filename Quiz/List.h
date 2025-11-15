@@ -1,4 +1,4 @@
 #pragma once
 
-extern void Move();
+extern void Move(int timer);
 extern void Move2();
