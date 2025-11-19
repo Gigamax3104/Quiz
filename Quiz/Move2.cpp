@@ -20,10 +20,11 @@ const char* Massage[] = {
 	"‘å`“–‚½‚Ÿ`‚è`II"
 };
 
+
 static bool Judge(int input,int answer);
 static JudgeMassage JudgeTell(int input,int answer);
 
-void Move2() {
+void numberHitGame() {
 	srand((unsigned int)time(NULL));
 
 	int RandomNumber = rand() % MAX + 1;

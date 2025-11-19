@@ -54,28 +54,30 @@ enum Massage {
 	Warst = 4
 };
 
-static bool ProgressTimer(int timer);
-static bool Quiz(int timer, int* QuestionList);
-static void Range(int* list);
-static bool Judge(const char* input, const char* answer);
-static Massage JM(int total);
+static bool progressTimer(int timer);
+static bool quiz(int timer, int* QuestionList);
+static void range(int* list);
+static bool judge(const char* input, const char* answer);
+static Massage judgementMassage(int total);
 
 //外部リンケージにする関数
-void Move(int timer) {
-	int* QuestionList = new int[QUIZ_MAX];
+void quizGame(int timer) {
+	int questionList[QUIZ_MAX];
 
-	while (ProgressTimer(timer)) {
-		Range(QuestionList);
-		if (!Quiz(timer, QuestionList)) {
+	for (int i = 0; i < QUIZ_MAX;i++) {
+		questionList[i] = i;
+	}
+
+	while (progressTimer(timer)) {
+		range(questionList);
+		if (!quiz(timer, questionList)) {
 			break;
 		}
 	}
-
-	delete[] QuestionList;
 }
 
 //10秒経過するまで処理する関数
-static bool ProgressTimer(int timer) {
+static bool progressTimer(int timer) {
 	time_t t = time(NULL);
 	struct tm* now = localtime(&t);
 
@@ -84,7 +86,7 @@ static bool ProgressTimer(int timer) {
 }
 
 //主に動作する関数
-static bool Quiz(int timer, int* QuestionList) {
+static bool quiz(int timer, int* QuestionList) {
 	int total = 0;
 	int i = 0;
 
@@ -104,7 +106,14 @@ static bool Quiz(int timer, int* QuestionList) {
 
 			printf("第%d問！%s\n回答:", i + 1, Question[QuestionList[i]]);
 			while ((key = getch()) != '\r') {
-				input[idx++] = key;
+				if (!(key >= ' ' && key <= '~')) {
+					input[idx++] = key;
+
+				}
+				else {
+					input[idx] = key;
+					idx += 2;
+				}
 				char* p = &input[idx - 1];
 				printf("%c", *p);
 			}
@@ -112,7 +121,7 @@ static bool Quiz(int timer, int* QuestionList) {
 			input[idx] = '\0';
 			printf("\n");
 
-			if (Judge(input, Answer[QuestionList[i]])) {
+			if (judge(input, Answer[QuestionList[i]])) {
 				printf("正解！\n\n");
 				total++;
 			}
@@ -123,14 +132,14 @@ static bool Quiz(int timer, int* QuestionList) {
 			idx = 0;
 			i++;
 
-			if (!ProgressTimer(timer)) {
+			if (!progressTimer(timer)) {
 				break;
 			}
 		}
 
-		printf("%s\n\n", massage[JM(total)]);
+		printf("%s\n\n", massage[judgementMassage(total)]);
 
-		if (!ProgressTimer(timer)) {
+		if (!progressTimer(timer)) {
 			break;
 		}
 		else if(i == QUIZ_MAX / 2){
@@ -144,7 +153,7 @@ static bool Quiz(int timer, int* QuestionList) {
 
 			} while (*p != 'x' && *p != 'z');
 
-			if (!ProgressTimer(timer)) {
+			if (!progressTimer(timer)) {
 				break;
 			}
 			else {
@@ -155,7 +164,7 @@ static bool Quiz(int timer, int* QuestionList) {
 		i = 0;
 		idx = 0;
 		total = 0;
-		Range(QuestionList);
+		range(QuestionList);
 
 	} while (*p == 'z');
 
@@ -163,28 +172,20 @@ static bool Quiz(int timer, int* QuestionList) {
 }
 
 //問題の出題順を決める関数
-static void Range(int* list) {
+static void range(int* list) {
 	srand((unsigned int)time(NULL));
 
-	list[0] = rand() % QUIZ_MAX;
-
 	for (int i = 1; i < QUIZ_MAX; i++) {
-		list[i] = rand() % QUIZ_MAX;
-
-		for (int j = 0; j < i;) {
-			if (list[j] == list[i]) {
-				j = 0;
-				list[i] = rand() % QUIZ_MAX;
-			}
-			else {
-				j++;
-			}
-		}
+		int idx = rand() % (QUIZ_MAX - i) + i;
+		int save = list[i];
+		list[i] = list[idx];
+		list[idx] = save;
 	}
+
 }
 
 //回答と解答との判断をする関数
-static bool Judge(const char* input, const char* answer) {
+static bool judge(const char* input, const char* answer) { //strcmp関数を使う。
 	const char* save = input;
 
 	while (*answer) {
@@ -208,14 +209,16 @@ static bool Judge(const char* input, const char* answer) {
 			input = save;
 			answer++;
 		}
-		else if (*input == '\0' || *answer == '\0') {
+		else if (*input == '\0') {
 			return false;
 		}
 	}
+
+	return false;
 }
 
 //正解数で決まる関数
-static Massage JM(int total) {
+static Massage judgementMassage(int total) {
 	return
 		total == 5 ? Perfect :
 		total == 4 ? Great :

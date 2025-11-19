@@ -4,6 +4,10 @@
 #include	<time.h>
 #include "List.h"
 
+enum State {
+	Quiz = 1,
+	NumberHit = 2
+};
 int main() {
 	int choice = 0;
 	time_t t = time(NULL);
@@ -13,10 +17,10 @@ int main() {
 	scanf("%d", &choice);
 
 	switch (choice) {
-		case 1:
-			Move(now->tm_sec); break;
-		case 2:
-			Move2(); break;
+		case Quiz:
+			quizGame(now->tm_sec); break;
+		case NumberHit:
+			numberHitGame(); break;
 	}
 }
 

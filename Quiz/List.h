@@ -1,4 +1,4 @@
 #pragma once
 
-extern void Move(int timer);
-extern void Move2();
+void quizGame(int timer);
+void numberHitGame();
