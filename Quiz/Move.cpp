@@ -2,6 +2,7 @@
 #define _CRT_NONSTDC_NO_WARNINGS
 #define QUIZ_MAX 10
 #define MAX_SIZE 100
+#define BACKSPACE 8
 #define SQR(x) ((x * x)) //#define[スペース]関数名(仮引数)[スペース](処理)でマクロ関数を定義できる。
 #include    <stdio.h>
 #include	<stdlib.h>
@@ -118,6 +119,12 @@ static bool quiz(int timer, int* QuestionList) {
 					idx += 2;
 					p = &input[idx - 2];
 				}
+
+				if (key == BACKSPACE) {
+					idx -= 2;
+					input[idx] = '\0';
+				}
+
 				printf("%c", *p);
 			}
 
@@ -178,8 +185,8 @@ static bool quiz(int timer, int* QuestionList) {
 static void range(int* list) {
 	srand((unsigned int)time(NULL));
 
-	for (int i = 1; i < QUIZ_MAX; i++) {
-		int idx = rand() % (QUIZ_MAX - i) + i;
+	for (int i = QUIZ_MAX - 1; i > 1; i--) {
+		int idx = rand() % (i - 1);
 		int save = list[i];
 		list[i] = list[idx];
 		list[idx] = save;
