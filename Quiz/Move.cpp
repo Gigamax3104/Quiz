@@ -5,6 +5,7 @@
 #define SQR(x) ((x * x)) //#define[スペース]関数名(仮引数)[スペース](処理)でマクロ関数を定義できる。
 #include    <stdio.h>
 #include	<stdlib.h>
+#include	<cstdio>
 #include	<time.h>
 #include	<conio.h>
 #include	<Windows.h>
@@ -57,7 +58,7 @@ enum Massage {
 static bool progressTimer(int timer);
 static bool quiz(int timer, int* QuestionList);
 static void range(int* list);
-static bool judge(const char* input, const char* answer);
+static bool judge(const char* input,const char* answer);
 static Massage judgementMassage(int total);
 
 //外部リンケージにする関数
@@ -106,15 +107,17 @@ static bool quiz(int timer, int* QuestionList) {
 
 			printf("第%d問！%s\n回答:", i + 1, Question[QuestionList[i]]);
 			while ((key = getch()) != '\r') {
-				if (!(key >= ' ' && key <= '~')) {
-					input[idx++] = key;
+				char* p;
 
+				if (key >= ' ' && key <= '~') {
+					input[idx++] = key;
+					p = &input[idx - 1];
 				}
 				else {
 					input[idx] = key;
 					idx += 2;
+					p = &input[idx - 2];
 				}
-				char* p = &input[idx - 1];
 				printf("%c", *p);
 			}
 
@@ -181,24 +184,31 @@ static void range(int* list) {
 		list[i] = list[idx];
 		list[idx] = save;
 	}
-
 }
 
 //回答と解答との判断をする関数
-static bool judge(const char* input, const char* answer) { //strcmp関数を使う。
+static bool judge(const char* input, const char* answer) {
 	const char* save = input;
 
 	while (*answer) {
-		if (*input == *answer) {
-			answer++;
-			input++;
+		if (strncmp(input,answer,1) == 0) {
 
-			if (*input == '\0' && (*answer == ',' || * answer == '(' || *answer == ')' || *answer == '\0')) {
+			answer++;
+			if (*input >= ' ' && *input <= '~') {
+				input++;
+			}
+			else {
+				input += 2;
+			}
+
+			if (*input == '\0' && (strncmp(answer, ",",1) == 0|| strncmp(answer, "(",1) == 0 
+								   || strncmp(answer, ")",1) == 0 || *answer == '\0')) {
+
 				return true;
 			}
 		}
-		else if (*input != *answer) {
-			while (*answer != ',' && *answer != '(') {
+		else if (strncmp(input,answer,1) != 0) {
+			while (strncmp(answer, ",",1) != 0 && strncmp(answer, "(",1) != 0) {
 				answer++;
 
 				if (*answer == '\0') {
