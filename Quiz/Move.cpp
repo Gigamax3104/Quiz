@@ -80,8 +80,8 @@ void quizGame(int timer) {
 
 //10•bŒo‰ß‚·‚é‚Ü‚Åˆ—‚·‚éŠÖ”
 static bool progressTimer(int timer) {
-	time_t t = time(NULL);
-	struct tm* now = localtime(&t);
+	time_t reTimer = time(NULL);
+	struct tm* now = localtime(&reTimer);
 
 	return
 		now->tm_sec - timer >= 10 ? false : true;
