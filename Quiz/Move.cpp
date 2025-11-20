@@ -12,7 +12,7 @@
 #include	<Windows.h>
 
 //問題リスト
-const char* Question[] = {
+const char* question[] = {
 	"兎は何類\?",
 	"ペットボトルは何で作られている\?",
 	"テレビ番組で知られている青い猫型ロボットが主人公のタイトル名は\?",
@@ -26,7 +26,7 @@ const char* Question[] = {
 };
 
 //答えリスト
-const char* Answer[] = {
+const char* answer[] = {
 	"ほにゅうるい(哺乳類,mammalian,Mammalian)",
 	"ぷらすちっく(プラスチック,plastic,Plastic)",
 	"どらえもん(ドラえもん)",
@@ -106,7 +106,7 @@ static bool quiz(int timer, int* QuestionList) {
 		while (i < QUIZ_MAX / 2) {
 			int idx = 0;
 
-			printf("第%d問！%s\n回答:", i + 1, Question[QuestionList[i]]);
+			printf("第%d問！%s\n回答:", i + 1, question[QuestionList[i]]);
 			while ((key = getch()) != '\r') {
 				char* p;
 
@@ -131,7 +131,7 @@ static bool quiz(int timer, int* QuestionList) {
 			input[idx] = '\0';
 			printf("\n");
 
-			if (judge(input, Answer[QuestionList[i]])) {
+			if (judge(input, answer[QuestionList[i]])) {
 				printf("正解！\n\n");
 				total++;
 			}
