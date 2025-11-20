@@ -185,11 +185,35 @@ static bool quiz(int timer, int* QuestionList) {
 static void range(int* list) {
 	srand((unsigned int)time(NULL));
 
+	int idx = 0;
+	int random = 0;
+	int memory[QUIZ_MAX - 1];
+
 	for (int i = QUIZ_MAX - 1; i > 1; i--) {
-		int idx = rand() % (i - 1);
+		random = rand() % (i - 1);
+
+		if (idx > 0) {
+			for (int i = 0; i < idx;) {
+
+				if (list[random] != memory[i]) {
+					i++;
+				}
+				else {
+					random = rand() % (i - 1);
+					i = 0;
+				}
+			}
+		}
+
+		memory[idx] = list[random];
 		int save = list[i];
-		list[i] = list[idx];
-		list[idx] = save;
+		list[i] = list[random];
+		list[random] = save;
+		idx++;
+	}
+
+	for (int i = 0; i < QUIZ_MAX; i++) {
+		printf("%d", list[i]);
 	}
 }
 
